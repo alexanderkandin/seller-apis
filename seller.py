@@ -12,7 +12,16 @@ logger = logging.getLogger(__file__)
 
 
 def get_product_list(last_id, client_id, seller_token):
-    """Получить список товаров магазина озон"""
+    """
+    Получить список товаров магазина озон
+
+        Args:
+        last_id (str) = Подается последний id товара, который получаем из функции get_offer_ids
+        client_id = Подается id клиента ОЗОН
+        seller_token = API сервисный ключи магазина Озон
+    Return:
+        list : Список из 1000 наименнований начиная с последнего id
+    """
     url = "https://api-seller.ozon.ru/v2/product/list"
     headers = {
         "Client-Id": client_id,
@@ -32,7 +41,16 @@ def get_product_list(last_id, client_id, seller_token):
 
 
 def get_offer_ids(client_id, seller_token):
-    """Получить артикулы товаров магазина озон"""
+    """
+    Получить артикулы товаров магазина озон
+
+        Args:
+            client_id = Подается id клиента ОЗОН
+            seller_token = API сервисный ключи магазина Озон
+
+        Return:
+            list : Список артиклов товара
+    """
     last_id = ""
     product_list = []
     while True:
@@ -49,7 +67,19 @@ def get_offer_ids(client_id, seller_token):
 
 
 def update_price(prices: list, client_id, seller_token):
-    """Обновить цены товаров"""
+    """
+    Обновить цены товаров на платформе Ozon.
+
+    Отправляет запрос для обновления цен товаров в системе Ozon
+
+        Args:
+            prices (list): Список цен на товары
+            client_id = Подается id клиента ОЗОН
+            seller_token = API сервисный ключи магазина Озон
+
+        Returns:
+            dict: Ответ от API Ozon, содержащий результат обновления цен.
+    """
     url = "https://api-seller.ozon.ru/v1/product/import/prices"
     headers = {
         "Client-Id": client_id,
@@ -62,7 +92,19 @@ def update_price(prices: list, client_id, seller_token):
 
 
 def update_stocks(stocks: list, client_id, seller_token):
-    """Обновить остатки"""
+    """
+    Обновить остатки товаров на платформе Ozon.
+
+    Отправляет запрос для обновления остатков товаров в системе Ozon
+
+        Args:
+            stocks (list): Список остатков товаров
+            client_id = Подается id клиента ОЗОН
+            seller_token = API сервисный ключи магазина Озон
+
+        Returns:
+            dict: Ответ от API Ozon, содержащий результат обновления остатков.
+    """
     url = "https://api-seller.ozon.ru/v1/product/import/stocks"
     headers = {
         "Client-Id": client_id,
@@ -96,7 +138,21 @@ def download_stock():
 
 
 def create_stocks(watch_remnants, offer_ids):
-    # Уберем то, что не загружено в seller
+    """
+    Создаёт список остатков товаров.
+
+    Убирает товары, которые не загружены в seller, и добавляет недостающие
+    товары с остатком 0.
+
+    Args:
+        watch_remnants (list): Список остатков часов скаченных с сайта casio
+        offer_ids (list): Список id товаров магазина озон
+
+    Returns:
+        list: Список словарей, где каждый словарь содержит:
+            - offer_id (str): Идентификатор товара.
+            - stock (int): Остаток товара.
+    """
     stocks = []
     for watch in watch_remnants:
         if str(watch.get("Код")) in offer_ids:
@@ -116,6 +172,19 @@ def create_stocks(watch_remnants, offer_ids):
 
 
 def create_prices(watch_remnants, offer_ids):
+    """
+    Создаёт список цен товаров.
+
+    Формирует список цен для товаров, присутствующих в остатках и
+    доступных для продажи, добавляя информацию о каждой цене.
+
+    Args:
+        watch_remnants (list): Список остатков часов скаченных с сайта casio
+        offer_ids (list): Список id товаров магазина озон
+
+    Returns:
+        list: Список словарей, на пример такие как валюта, id, цена
+    """
     prices = []
     for watch in watch_remnants:
         if str(watch.get("Код")) in offer_ids:
@@ -150,7 +219,16 @@ def price_conversion(price: str) -> str:
 
 
 def divide(lst: list, n: int):
-    """Разделить список lst на части по n элементов"""
+    """
+    Разделить список lst на части по n элементов и возвращает по очереди
+
+        Args:
+            lst (list): Исходный список, который нужно разделить.
+            n (int): Размер каждой части.
+
+        Yields:
+            list: Подсписок из n элементов.
+    """
     for i in range(0, len(lst), n):
         yield lst[i : i + n]
 
