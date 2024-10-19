@@ -16,9 +16,9 @@ def get_product_list(last_id, client_id, seller_token):
     Получить список товаров магазина озон
 
         Args:
-        last_id (str) = Подается последний id товара, который получаем из функции get_offer_ids
-        client_id = Подается id клиента ОЗОН
-        seller_token = API сервисный ключи магазина Озон
+        last_id (str): Подается последний id товара, который получаем из функции get_offer_ids
+        client_id (str): Подается id клиента ОЗОН
+        seller_token (str): API сервисный ключи магазина Озон
     Return:
         list : Список из 1000 наименнований начиная с последнего id
     """
@@ -45,8 +45,8 @@ def get_offer_ids(client_id, seller_token):
     Получить артикулы товаров магазина озон
 
         Args:
-            client_id = Подается id клиента ОЗОН
-            seller_token = API сервисный ключи магазина Озон
+            client_id (str): Подается id клиента ОЗОН
+            seller_token (str): API сервисный ключи магазина Озон
 
         Return:
             list : Список артиклов товара
@@ -74,8 +74,8 @@ def update_price(prices: list, client_id, seller_token):
 
         Args:
             prices (list): Список цен на товары
-            client_id = Подается id клиента ОЗОН
-            seller_token = API сервисный ключи магазина Озон
+            client_id (str): Подается id клиента ОЗОН
+            seller_token (str): API сервисный ключи магазина Озон
 
         Returns:
             dict: Ответ от API Ozon, содержащий результат обновления цен.
@@ -99,8 +99,8 @@ def update_stocks(stocks: list, client_id, seller_token):
 
         Args:
             stocks (list): Список остатков товаров
-            client_id = Подается id клиента ОЗОН
-            seller_token = API сервисный ключи магазина Озон
+            client_id (str): Подается id клиента ОЗОН
+            seller_token (str): API сервисный ключи магазина Озон
 
         Returns:
             dict: Ответ от API Ozon, содержащий результат обновления остатков.
@@ -183,7 +183,7 @@ def create_prices(watch_remnants, offer_ids):
         offer_ids (list): Список id товаров магазина озон
 
     Returns:
-        list: Список словарей, на пример такие как валюта, id, цена
+        list: Список словарей, например такие как валюта, id товара, цена
     """
     prices = []
     for watch in watch_remnants:
@@ -204,7 +204,7 @@ def price_conversion(price: str) -> str:
     Преобразовать цену. Пример: 5'990.00 руб. -> 5990
 
     Args:
-        price (str) = Подается цена в виде строки
+        price (str): Подается цена в виде строки
 
     Return:
         str: Строка только с числовыми символами
